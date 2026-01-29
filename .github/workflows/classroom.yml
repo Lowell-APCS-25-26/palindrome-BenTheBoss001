@@ -1,0 +1,80 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: testTest
+      id: testtest
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testTest
+        setup-command: ''
+        command: gradle test --tests "*testTest*"
+        timeout: 10
+        max-score: 1
+    - name: testRotator
+      id: testrotator
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testRotator
+        setup-command: ''
+        command: gradle test --tests "*testRotator*"
+        timeout: 10
+        max-score: 1
+    - name: testRewriter
+      id: testrewriter
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testRewriter
+        setup-command: ''
+        command: gradle test --tests "*testRewriter*"
+        timeout: 10
+        max-score: 1
+    - name: testNusesRun
+      id: testnusesrun
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testNusesRun
+        setup-command: ''
+        command: gradle test --tests "*testNusesRun*"
+        timeout: 10
+        max-score: 1
+    - name: testMadamImAdam
+      id: testmadamimadam
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testMadamImAdam
+        setup-command: ''
+        command: gradle test --tests "*testMadamImAdam*"
+        timeout: 10
+        max-score: 1
+    - name: testAManAPlanACanalPanama
+      id: testamanaplanacanalpanama
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testAManAPlanACanalPanama
+        setup-command: ''
+        command: gradle test --tests "*testAManAPlanACanalPanama*"
+        timeout: 10
+        max-score: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TESTTEST_RESULTS: "${{steps.testtest.outputs.result}}"
+        TESTROTATOR_RESULTS: "${{steps.testrotator.outputs.result}}"
+        TESTREWRITER_RESULTS: "${{steps.testrewriter.outputs.result}}"
+        TESTNUSESRUN_RESULTS: "${{steps.testnusesrun.outputs.result}}"
+        TESTMADAMIMADAM_RESULTS: "${{steps.testmadamimadam.outputs.result}}"
+        TESTAMANAPLANACANALPANAMA_RESULTS: "${{steps.testamanaplanacanalpanama.outputs.result}}"
+      with:
+        runners: testtest,testrotator,testrewriter,testnusesrun,testmadamimadam,testamanaplanacanalpanama
